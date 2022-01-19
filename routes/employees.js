@@ -49,4 +49,21 @@ router.patch('/:employeeId', (req, res, next) => {
     });
 });
 
+router.delete('/:employeeId', (req, res, next) => {
+    db.loadDatabase({}, () => {
+        const emplId = req.params.employeeId;
+
+        db.getCollection('employees')
+            .findAndRemove(data => data.id === parseInt(emplId))
+
+        db.saveDatabase(() => {
+            res.status(200).json({
+                message: 'Data deleted successfully'
+            });
+        });
+
+    });
+});
+
+
 module.exports = router;

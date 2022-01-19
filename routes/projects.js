@@ -56,5 +56,21 @@ router.patch('/:projectId', (req, res, next) => {
     });
 });
 
+router.delete('/:projectId', (req, res, next) => {
+    db.loadDatabase({}, () => {
+        const projectId = req.params.projectId;
+
+        db.getCollection('projects')
+            .findAndRemove(data => data.id === parseInt(projectId))
+
+        db.saveDatabase(() => {
+            res.status(200).json({
+                message: 'Data deleted successfully'
+            });
+        });
+
+    });
+});
+
 
 module.exports = router;
