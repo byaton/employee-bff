@@ -5,9 +5,7 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
     db.loadDatabase({}, () => {
-        console.log('Amit234');
         const projectData = db.getCollection('projects').data;
-        console.log('Amit3', projectData);
         const newProjectData = projectData.map(m => {
             return {
                 id: m.id,
@@ -17,15 +15,12 @@ router.get('/', (req, res, next) => {
                 empIds: m.empIds
             }
         });
-        console.log('Amit4', newProjectData);
         res.status(200).json(newProjectData);
     });
 });
 
 router.post('/', (req, res, next) => {
-    console.log('Amit1', req.body);
     db.loadDatabase({}, () => {
-        console.log('Amit2', req.body);
         db.getCollection('projects').insert(req.body);
         db.saveDatabase(() => {
             res.status(200).json({
@@ -38,7 +33,6 @@ router.post('/', (req, res, next) => {
 });
 
 router.patch('/:projectId', (req, res, next) => {
-    console.log('Amit1', req.params, req.body);
     db.loadDatabase({}, () => {
         const projectId = req.params.projectId;
         const nameTobeUpdated = req.body.name;
@@ -46,12 +40,9 @@ router.patch('/:projectId', (req, res, next) => {
         const dateToBeUpdated = req.body.date;
         const empIdsToBeUpdated = req.body.empIds;
     
-        console.log('Amit2', projectId, nameTobeUpdated);
         db.getCollection('projects').updateWhere(data => {
-            console.log('Amit3', data);
             return data.id === parseInt(projectId);
         }, data => {
-            console.log('Amit4', data);
             data.name = nameTobeUpdated;
             data.description = descToBeUpdated;
             data.date = dateToBeUpdated;
